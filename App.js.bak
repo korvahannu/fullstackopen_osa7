@@ -1,0 +1,178 @@
+import './App.css';
+import React, { useState, useEffect, useRef } from 'react';
+
+import blogServices from './services/blogServices';
+import loginServices from './services/userServices.js';
+import Warning from './components/Warning';
+
+import ListOfBlogs from './components/ListOfBlogs.js';
+import Notification from './components/Notification.js';
+import CreateNewBlog from './components/CreateNewBlog.js';
+import Toggable from './components/Toggable';
+
+import { useDispatch } from 'react-redux';
+import { setTimedNotification, setTimedWarning } from './reducers/notificationReducer';
+
+import { initializeBlog } from './reducers/blogReducer';
+
+const App = () => {
+
+  const [blogs, setBlogs] = useState([]);
+  const [formUsername, setFormUsername] = useState('');
+  const [formPassword, setFormPassword] = useState('');
+  const [user, setUser] = useState(null);
+  const createNewBlogRef = useRef();
+
+  const dispatch = useDispatch();
+
+  useEffect( () => {
+
+    const loggedInBlogUser = window.localStorage.getItem('loggedInBlogUser');
+
+    if(loggedInBlogUser)
+    {
+      const user = JSON.parse(loggedInBlogUser);
+      setUser(user);
+      blogServices.setToken(user.token);
+    }
+
+    updateBlog();
+
+    dispatch(initializeBlog());
+
+  }, []);
+
+  const updateBlog = () => {
+
+    blogServices
+      .getAll()
+      .then(allBlogs => {
+        allBlogs.sort(
+          (a, b) => {return b.likes - a.likes;}
+        );
+        setBlogs(allBlogs);
+      });
+  };
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try
+    {
+      const credentials = {
+        username: formUsername,
+        password: formPassword
+      };
+
+      const user = await loginServices.login(credentials);
+
+      setUser(user);
+      setFormPassword('');
+      setFormUsername('');
+      blogServices.setToken(user.token);
+      window.localStorage.setItem('loggedInBlogUser', JSON.stringify(user));
+    }
+    catch (error)
+    {
+      dispatch(setTimedWarning('Invalid username or password',5));
+    }
+  };
+
+  const handleLogout = async () => {
+
+    setUser(null);
+    setFormPassword('');
+    setFormUsername('');
+    window.localStorage.removeItem('loggedInBlogUser');
+
+    dispatch(setTimedNotification('Logged out successfully!', 5));
+  };
+
+  const likeBlog = async (blog) => {
+    await blogServices.likeBlog(blog);
+    await updateBlog();
+  };
+
+  const drawLoginPrompt = () => {
+    return(
+      <div id="loginPrompt">
+        <h2>Please login to view posts:</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            username <input id="loginUsername" type="text" name="Username" value={formUsername} onChange={({ target }) => setFormUsername(target.value)}/>
+          </div>
+          <div>
+            password <input id="loginPassword" type="password" name="Password" value={formPassword} onChange={({ target }) => setFormPassword(target.value)}/>
+          </div>
+          <button type="submit" id="loginSubmit">login</button>
+        </form>
+      </div>
+    );
+  };
+
+  const drawBlogList = () => {
+
+    return(
+      <div key='drawBlogList'>
+
+        <h3>List of current blogs</h3>
+
+        {blogs.map(
+          blog =>
+            <ListOfBlogs key={blog.id} blog={blog} updateBlog={updateBlog} likeBlog={likeBlog}/>
+        )}
+      </div>
+    );
+  };
+
+  const drawLogoutForm = () => (
+    <div key='drawLogoutForm'>
+      Logged in as {user.username}
+      <form onSubmit={handleLogout}>
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+  );
+
+  const handleCreateBlog = async (newBlog) => {
+    try
+    {
+
+      await blogServices.create(newBlog);
+      await updateBlog();
+
+      createNewBlogRef.current.toggleVisible();
+
+      dispatch(setTimedNotification(`A new blog ${newBlog.title} by ${newBlog.author} has been added.`, 5));
+    }
+    catch (error)
+    {
+      dispatch(setTimedWarning('Please input valid information only',5));
+      console.log(error);
+    }
+  };
+
+  const drawCreateNew = () => (
+    <Toggable labelShow='Add a new blog' labelHide='Cancel' key='toggableNewBlog' ref={createNewBlogRef}>
+      <CreateNewBlog create={handleCreateBlog} key="createnewblog" />
+    </Toggable>
+  );
+
+  return (
+    <div id="wrapper">
+      <h1>Blogs by Hannu Korvala</h1>
+
+      <Notification />
+      <Warning />
+
+      {
+
+        user === null
+          ? drawLoginPrompt()
+          : [drawCreateNew(), drawBlogList(), drawLogoutForm()]
+      }
+
+    </div>
+  );
+};
+
+export default App;

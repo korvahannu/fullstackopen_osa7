@@ -3,6 +3,10 @@ body
     margin: 0px;
     background-color:#F0F3F6;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('background.jpeg');
+    background-repeat:no-repeat;
+    background-size: cover;
+    font-size:110%;
 }
 
 #wrapper
@@ -10,9 +14,10 @@ body
     margin-left:auto;
     margin-right:auto;
     padding:32px;
-    width:800px;
+    width:1024px;
     height:100vh;
     background-color: #f1faee;
+    opacity: 85%;
 }
 
 #wrapper h1
@@ -26,62 +31,6 @@ body
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.ListBlogTable
-{
-    width:100%;
-}
-
-.ListBlogTable th
-{
-    width:50%;
-    font-style: italic;
-    color:#555;
-    border-bottom:1px solid #ccc;
-}
-
-#ListBlogTableHead
-{
-    width:100%;
-}
-
-#ListBlogTableHead th
-{
-    width:50%;
-    color:#222;
-    border-bottom:1px solid #ccc;
-    text-transform: uppercase;
-    font-size:1.3em;
-}
-
-#loginPrompt
-{
-    margin:32px;
-    text-transform: capitalize;
-}
-
-#loginPrompt div
-{
-    margin:8px;
-}
-
-#create_new_blog
-{
-    padding:16px;
-    border-radius:32px;
-    margin-bottom:32px;
-}
-
-#create_new_blog div
-{
-    margin-bottom:8px;
-    text-transform: capitalize;
-    margin-left:16px;
-}
-
-#create_new_blog input
-{
-    margin-left:8px;
-}
 
 #notification
 {
@@ -114,7 +63,7 @@ body
 button
 {
     background-image: linear-gradient(to right, #059FEB, #20C2FB);
-    padding:16px;
+    padding:8px;
     border:0px hidden #000;
     border-radius:24px;
     font-weight:bold;
@@ -123,18 +72,138 @@ button
     min-width:128px;
     margin-top:24px;
     text-transform:capitalize;
-}
-
-.Toggable
-{
-    padding-bottom:0px;
+    height:42px;
 }
 
 .Toggable_Button
 {
-    background-image: linear-gradient(to right, #eb0505, #fa4747);
+    background-image: none;
+    background-color: transparent;
     padding:8px;
     margin:12px;
-    min-width:32px;
+    min-width:128px;
     font-size:0.8em;
+    color:black;
+}
+
+#navigation-bar
+{
+    padding-left:32px;
+    text-align: center;
+}
+
+.navigation-bar-link
+{
+    text-decoration: none;
+    font-size:1.25em;
+    margin-right:16px;
+    color:black;
+    text-transform: uppercase;
+}
+
+.navigation-bar-link:hover
+{
+    border-bottom:1px solid #bbb;
+}
+
+.blogList-singleBlog
+{
+    text-decoration: none;
+    border-bottom: 1px #ccc dashed;
+    margin-bottom:16px;
+    padding-bottom:8px;
+}
+
+.blogList-singleBlog a
+{
+    text-decoration: none;
+    color:black;
+}
+
+.blogList-singleBlog a:hover
+{
+    text-decoration: underline;
+}
+table
+{
+    text-align:left;
+    font-weight: normal;
+}
+
+table a
+{
+    text-decoration: none;
+    color:black;
+    font-weight: normal;
+}
+
+table a:hover
+{
+    text-decoration: underline;
+}
+
+#link-logout
+{
+    float:right;
+    text-decoration:none;
+    color:black;
+}
+
+#link-logout:hover
+{
+    text-decoration: underline;
+}
+
+#form-create-blog
+{
+    padding-left:32px;
+    border:1px dotted #ccc;
+    padding-bottom:16px;
+}
+
+.button-like-generic
+{
+    background-color: transparent;
+    background-image: none;
+    border:1px solid #ccc;
+    margin-left:16px;
+    font-size:0.9em;
+    color:green;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+}
+
+.button-like-generic:hover
+{
+    background-color: #eee;
+}
+
+.generic-h3
+{
+    margin-bottom:0px;
+    padding-bottom:0px;
+}
+
+.generic-crunch
+{
+    font-weight:normal;
+    font-size:0.8em;
+    font-style:italic;
+}
+
+.blog-article-open
+{
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+    margin-top:32px;
+}
+
+.blog-article-open a
+{
+    font-size:1.2em;
+    color:black;
+    font-weight:bold;
 }

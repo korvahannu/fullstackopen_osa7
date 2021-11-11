@@ -1,5 +1,6 @@
 const Blog = require('../models/blog.js');
 const User = require('../models/user.js');
+const Comment = require('../models/comment');
 
 /*
     title: String,
@@ -58,6 +59,11 @@ const generateRandomID = async () => {
     return id;
 };
 
+const getAllComments = async () => {
+    const all = await Comment.find({});
+    return all.map(r => r.toJSON());
+};
+
 const getBlogFromDatabase = async () => {
 
 	const everything = await Blog.find({});
@@ -71,4 +77,4 @@ const getUsersFromDatabase = async() => {
 	return everything.map(r => r.toJSON());
 };
 
-module.exports = {dummyBlogs, generateRandomID, getBlogFromDatabase,  getUsersFromDatabase};
+module.exports = {dummyBlogs, generateRandomID, getBlogFromDatabase,  getUsersFromDatabase, getAllComments};

@@ -6,6 +6,7 @@ const api = supertest(app);
 const database_helper = require('./database_helper.js');
 const Blog = require('../models/blog.js');
 const User = require('../models/user.js');
+const Comment = require('../models/comment.js');
 const cryptor = require('bcrypt');
 
 let token;
@@ -18,6 +19,7 @@ const init = async () => {
 
 	await user.save();
 	await Blog.deleteMany({});
+	await Comment.deleteMany({})
 
 	database_helper.dummyBlogs.forEach(du => {	// Lisätään tuo rootin user id tähän
 		du.user = user._id;
@@ -155,6 +157,34 @@ describe('Blog post tests', () => {
 		const titles = endNotes.map(r => r.title);
 
 		expect(titles).not.toContainEqual(noteToDelete.title);
+	});
+
+	test('Can you comment and get all comments?', async () => {
+		
+		const startNotes = await database_helper.getBlogFromDatabase();
+
+		const comment = {
+			comment:'this is a test comment',
+			blogId:startNotes[0].id
+		}
+
+		await api.post('/api/comments')
+		.send(comment)
+		.set('Authorization', token)
+		.expect(200)
+		.expect('Content-Type', /application\/json/);
+
+		const comments = await database_helper.getAllComments();
+
+		expect(comments).toHaveLength(1);
+		expect(comments[0].comment).toBe('this is a test comment');
+
+		const result = await api.get(`/api/comments/${startNotes[0].id}`)
+		.expect(200)
+		.expect('Content-Type', /application\/json/);
+
+		expect(result.body.comment).toBe('this is a test comment')
+
 	});
 
 

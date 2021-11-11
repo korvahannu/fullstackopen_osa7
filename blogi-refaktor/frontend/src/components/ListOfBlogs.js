@@ -15,7 +15,8 @@ const ListOfBlogs = () => {
       .sort((a,b) => b.likes -a.likes)
       .map(
         blog =>
-          <ListOfBlogs_Single key={blog.id} blog={blog} />
+          <ListOfBlogs_Single key={blog.id} blog={blog}  />
+
       )}
     </div>
   );

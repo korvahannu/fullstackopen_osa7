@@ -9,6 +9,7 @@ const middleware = require('./utils/middleware');       // Sisältää erilaisia
 const blogsRouter = require('./controllers/blog.js');   // Router, joka ohjaa pyyntöjä 
 const usersRouter = require('./controllers/user.js');   // Router, joka ohjaa pyyntöjä
 const loginRouter = require('./controllers/login.js');
+const commentsRouter = require('./controllers/commentController.js');
 
 logger.info('Connecting to MongoDB. . .');
 mongoose.connect(config.MONGODB_URI)
@@ -27,6 +28,7 @@ app.use(middleware.getTokenFrom);                       // MIDDLEWARE, hakee tok
 
 app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);                     // MIDDLEWARE, joka käsittelee GET, POST, DELETE, PUT ym. pyyntöjä
+app.use('/api/comments', commentsRouter);
 
 app.use('/api/blogs', middleware.validateTokenGetUser, blogsRouter);    // MIDDLEWARE, joka käsittelee GET, POST, DELETE, PUT ym. pyyntöjä.
                                                                         // Sisältää myös middleware validateTokenGetUser, joka hakee get, post ja delete

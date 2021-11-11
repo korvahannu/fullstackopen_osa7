@@ -7,12 +7,15 @@ const LogoutForm = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
+  if(user === "")
+  {
+    return null;
+  }
+
   return(
     <div key='drawLogoutForm'>
-      Logged in as {user.username}
-      <form onSubmit={()=>dispatch(logCurrentUserOut())}>
-        <button type="submit">Logout</button>
-      </form>
+      Logged in as <i>{user.username}</i>
+      <a onClick={()=>dispatch(logCurrentUserOut())} href='' id='link-logout'>Log out</a>
     </div>
   );
 };

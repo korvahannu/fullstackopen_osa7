@@ -6,6 +6,7 @@ token
 
 import loginServices from '../services/userServices';
 import blogServices from '../services/blogServices';
+import commentServices from '../services/commentServices';
 import { setTimedWarning } from './notificationReducer';
 
 const userReducer = (state = '', action) => {
@@ -34,6 +35,7 @@ const userReducer = (state = '', action) => {
 
 export const loginFromStorage = (user) => {
   blogServices.setToken(user.token);
+  commentServices.setToken(user.token);
   return{
     type:'SET_USER',
     username:user.username,
@@ -57,6 +59,7 @@ export const loginUsingReducer = credentials => {
         token:user.token
       })
       blogServices.setToken(user.token);
+      commentServices.setToken(user.token);
     }
     catch(error)
     {
@@ -70,6 +73,7 @@ export const logCurrentUserOut = () => {
 
   window.localStorage.removeItem('loggedInBlogUser');
   blogServices.setToken(null);
+  commentServices.setToken(null);
 
   return {
     type:'LOGOUT'

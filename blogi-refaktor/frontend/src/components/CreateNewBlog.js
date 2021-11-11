@@ -38,21 +38,38 @@ const CreateNewBlog = ({hideForm}) => {
   };
 
   return(
-    <div id="create_new_blog">
+    <div id="form-create-blog">
       <h2>Create new </h2>
       <form onSubmit={newBlog}>
-        <div>
-                title
-          <input id="createBlogTitle" type="text" name="Title" value={formTitle} onChange={({ target }) => setFormTitle(target.value)} />
-        </div>
-        <div>
-                author
-          <input id="createBlogAuthor" type="text" name="Author" value={formAuthor} onChange={({ target }) => setFormAuthor(target.value)} />
-        </div>
-        <div>
-                url
-          <input id="createBlogUrl" type="text" name="Url" value={formUrl} onChange={({ target }) => setFormUrl(target.value)} />
-        </div>
+
+        <table>
+          <tbody>
+            <tr>
+              <th>
+              title
+              </th>
+              <th>
+              <input id="createBlogTitle" type="text" name="Title" value={formTitle} onChange={({ target }) => setFormTitle(target.value)} />
+              </th>
+            </tr>
+            <tr>
+              <th>
+              author
+              </th>
+              <th>
+              <input id="createBlogAuthor" type="text" name="Author" value={formAuthor} onChange={({ target }) => setFormAuthor(target.value)} />
+              </th>
+            </tr>
+            <tr>
+              <th>
+              url
+              </th>
+              <th>
+              <input id="createBlogUrl" type="text" name="Url" value={formUrl} onChange={({ target }) => setFormUrl(target.value)} />
+              </th>
+            </tr>
+          </tbody>
+        </table>
         <button type="submit" id="button-submitNewBlog">Create</button>
       </form>
     </div>

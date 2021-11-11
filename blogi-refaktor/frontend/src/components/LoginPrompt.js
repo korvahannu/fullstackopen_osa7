@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import { useDispatch } from "react-redux";
 import { loginUsingReducer } from '../reducers/userReducer';
+import { useSelector } from "react-redux";
 
 const LoginPrompt = () => {
 
   const [formUsername, setFormUsername] = useState('');
   const [formPassword, setFormPassword] = useState('');
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -21,6 +23,11 @@ const LoginPrompt = () => {
     setFormPassword('');
     setFormUsername('');
   };
+
+  if(user !== "")
+  { 
+    return null;
+  }
 
   return(
     <div id="loginPrompt">
